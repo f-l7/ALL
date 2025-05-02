@@ -108,8 +108,7 @@ function promoteAdmin(index) {
     if(currentRank === "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
     if(currentRank === "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
     if(currentRank === "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿";
-    if(currentRank === "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿") newRank = "✶〢𝗢𝘄𝗻𝗲𝗿";
-    else if(currentRank === "") newRank = "مدير";
+    else if(currentRank === "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿") newRank = "✶〢𝗢𝘄𝗻𝗲𝗿";
     else {
         alert("لا يمكن ترقية مدير");
         return;
