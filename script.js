@@ -101,8 +101,15 @@ function promoteAdmin(index) {
     const currentRank = systemData.admins[index].rank;
     let newRank = currentRank;
     
-    if(currentRank === "مشرف") newRank = "رئيس";
-    else if(currentRank === "رئيس") newRank = "مدير";
+    if(currentRank === "✶〢𝗠𝗼𝗱") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻";
+    if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻") newRank = "✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿";
+    if(currentRank === "✶〢 ✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
+    if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
+    if(currentRank === "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
+    if(currentRank === "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
+    if(currentRank === "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿";
+    if(currentRank === "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿") newRank = "✶〢𝗢𝘄𝗻𝗲𝗿";
+    else if(currentRank === "") newRank = "مدير";
     else {
         alert("لا يمكن ترقية مدير");
         return;
