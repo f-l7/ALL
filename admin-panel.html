@@ -20,11 +20,7 @@
                 <h2>تسجيل إداري جديد</h2>
                 <input type="text" id="newAdminName" placeholder="اسم الإداري">
                 <input type="file" id="adminImage" accept="image/*">
-                <select id="adminRank">
-                    <option value="مشرف">مشرف</option>
-                    <option value="رئيس">رئيس</option>
-                    <option value="مدير">مدير</option>
-                </select>
+                <input type="text" id="customRank" placeholder="اكتب الرتبة هنا">
                 <button onclick="addNewAdmin()">حفظ</button>
             </div>
         </div>
@@ -45,6 +41,16 @@
                     <button onclick="confirmAction()">تأكيد</button>
                     <button onclick="cancelAction()">إلغاء</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- نافذة الترقية -->
+        <div id="promoteModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="hidePromoteModal()">&times;</span>
+                <h2>ترقية إداري</h2>
+                <input type="text" id="newRank" placeholder="اكتب الرتبة الجديدة">
+                <button onclick="performPromotion()">تطبيق</button>
             </div>
         </div>
     </div>
