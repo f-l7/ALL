@@ -38,7 +38,6 @@ function loginAdmin() {
     const username = document.getElementById('adminUsername').value;
     const password = document.getElementById('adminPassword').value;
 
-    // بيانات الدخول الافتراضية
     if(username === "admin" && password === "admin123") {
         localStorage.setItem('adminLoggedIn', 'true');
         window.location.href = 'admin-panel.html';
@@ -80,12 +79,17 @@ function renderAdmins() {
 
 // إضافة إداري جديد
 function addNewAdmin() {
-    const name = document.getElementById('newAdminName').value;
-    const rank = document.getElementById('customRank').value;
+    const name = document.getElementById('newAdminName').value.trim();
+    const rank = document.getElementById('customRank').value.trim();
     const imageFile = document.getElementById('adminImage').files[0];
 
-    if(!name || !rank) {
-        alert('الرجاء إدخال جميع البيانات المطلوبة');
+    if(!name) {
+        alert('الرجاء إدخال اسم الإداري');
+        return;
+    }
+
+    if(!rank) {
+        alert('الرجاء إدخال رتبة الإداري');
         return;
     }
 
@@ -104,6 +108,7 @@ function addNewAdmin() {
     saveAdmins();
     hideAddAdminForm();
     renderAdmins();
+    alert('تم تسجيل الإداري الجديد بنجاح');
 }
 
 // ترقية إداري
