@@ -2,7 +2,20 @@
 const systemData = {
     currentAdmin: null,
     admins: [],
-    tempData: null
+    tempData: null,
+    
+    // تسلسل الرتب الهرمي
+    rankHierarchy: [
+        "مود",
+        "أدمن",
+        "سوبرفايزر",
+        "مدير أدمن",
+        "مدير عام",
+        "المؤسس المشارك",
+        "المؤسس",
+        "المالك المشارك",
+        "المالك"
+    ]
 };
 
 // عند تحميل الصفحة
@@ -25,8 +38,7 @@ function loginAdmin() {
     const username = document.getElementById('adminUsername').value;
     const password = document.getElementById('adminPassword').value;
 
-    // هنا يجب التحقق من قاعدة البيانات
-    // نستخدم بيانات افتراضية للتوضيح
+    // بيانات الدخول الافتراضية
     if(username === "admin" && password === "admin123") {
         localStorage.setItem('adminLoggedIn', 'true');
         window.location.href = 'admin-panel.html';
@@ -37,10 +49,8 @@ function loginAdmin() {
 
 // تحميل بيانات الإداريين
 function loadAdmins() {
-    // جلب البيانات من localStorage أو استخدام بيانات افتراضية
     const savedAdmins = localStorage.getItem('adminsData');
     systemData.admins = savedAdmins ? JSON.parse(savedAdmins) : [];
-    
     renderAdmins();
 }
 
@@ -71,11 +81,11 @@ function renderAdmins() {
 // إضافة إداري جديد
 function addNewAdmin() {
     const name = document.getElementById('newAdminName').value;
-    const rank = document.getElementById('adminRank').value;
+    const rank = document.getElementById('customRank').value;
     const imageFile = document.getElementById('adminImage').files[0];
 
-    if(!name) {
-        alert('الرجاء إدخال اسم الإداري');
+    if(!name || !rank) {
+        alert('الرجاء إدخال جميع البيانات المطلوبة');
         return;
     }
 
@@ -99,47 +109,47 @@ function addNewAdmin() {
 // ترقية إداري
 function promoteAdmin(index) {
     const currentRank = systemData.admins[index].rank;
-    let newRank = currentRank;
+    const currentIndex = systemData.rankHierarchy.indexOf(currentRank);
     
-    if(currentRank === "✶〢𝗠𝗼𝗱") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻";
-    if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻") newRank = "✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿";
-    if(currentRank === "✶〢 ✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
-    if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
-    if(currentRank === "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
-    if(currentRank === "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
-    if(currentRank === "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿";
-    else if(currentRank === "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿") newRank = "✶〢𝗢𝘄𝗻𝗲𝗿";
-    else {
-        alert("لا يمكن ترقية اكثر من Owner");
+    if (currentIndex === -1) {
+        alert("الرتبة الحالية غير معروفة في النظام");
         return;
     }
-
+    
+    if (currentIndex === systemData.rankHierarchy.length - 1) {
+        alert("هذا الإداري في أعلى رتبة ولا يمكن ترقيته");
+        return;
+    }
+    
+    const newRank = systemData.rankHierarchy[currentIndex + 1];
     systemData.admins[index].rank = newRank;
     saveAdmins();
     renderAdmins();
+    
+    alert(`تم ترقية ${systemData.admins[index].name} إلى رتبة ${newRank}`);
 }
 
 // تنزيل رتبة إداري
 function demoteAdmin(index) {
     const currentRank = systemData.admins[index].rank;
-    let newRank = currentRank;
+    const currentIndex = systemData.rankHierarchy.indexOf(currentRank);
     
-    if(currentRank === "✶〢𝗢𝘄𝗻𝗲𝗿") newRank = "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿";
-    if(currentRank === "✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿") newRank = "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
-    if(currentRank === "✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿";
-    if(currentRank === "✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿") newRank = "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
-    if(currentRank === "✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿";
-    if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿") newRank = "✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿";
-    if(currentRank === "✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿") newRank = "✶〢 𝗔𝗱𝗺𝗶𝗻";
-    else if(currentRank === "✶〢 𝗔𝗱𝗺𝗶𝗻") newRank = "✶〢𝗠𝗼𝗱";
-    else {
-        alert("لا يمكن تنزيل اقل من Mod");
+    if (currentIndex === -1) {
+        alert("الرتبة الحالية غير معروفة في النظام");
         return;
     }
-
+    
+    if (currentIndex === 0) {
+        alert("هذا الإداري في أدنى رتبة ولا يمكن تنزيله");
+        return;
+    }
+    
+    const newRank = systemData.rankHierarchy[currentIndex - 1];
     systemData.admins[index].rank = newRank;
     saveAdmins();
     renderAdmins();
+    
+    alert(`تم تنزيل رتبة ${systemData.admins[index].name} إلى ${newRank}`);
 }
 
 // تأكيد الفصل
@@ -152,9 +162,11 @@ function showDeleteConfirm(index) {
 // تنفيذ الفصل
 function confirmAction() {
     if(systemData.tempData !== null) {
+        const adminName = systemData.admins[systemData.tempData].name;
         systemData.admins.splice(systemData.tempData, 1);
         saveAdmins();
         renderAdmins();
+        alert(`تم فصل الإداري ${adminName} بنجاح`);
     }
     hideConfirmModal();
 }
@@ -169,7 +181,7 @@ function saveAdmins() {
     localStorage.setItem('adminsData', JSON.stringify(systemData.admins));
 }
 
-// إظهار نموذج الإضافة
+// عرض نموذج الإضافة
 function showAddAdminForm() {
     document.getElementById('addAdminForm').style.display = 'block';
 }
@@ -177,8 +189,8 @@ function showAddAdminForm() {
 // إخفاء نموذج الإضافة
 function hideAddAdminForm() {
     document.getElementById('addAdminForm').style.display = 'none';
-    // مسح الحقول
     document.getElementById('newAdminName').value = '';
+    document.getElementById('customRank').value = '';
     document.getElementById('adminImage').value = '';
 }
 
@@ -190,16 +202,17 @@ function hideConfirmModal() {
 
 // إعداد مستمعي الأحداث
 function setupEventListeners() {
-    // إغلاق النماذج عند النقر خارجها
     window.onclick = function(event) {
         const addForm = document.getElementById('addAdminForm');
-        if(event.target == addForm) {
-            hideAddAdminForm();
-        }
+        if(event.target == addForm) hideAddAdminForm();
         
         const confirmModal = document.getElementById('confirmModal');
-        if(event.target == confirmModal) {
-            hideConfirmModal();
-        }
+        if(event.target == confirmModal) hideConfirmModal();
     }
+}
+
+// تسجيل الخروج
+function logout() {
+    localStorage.removeItem('adminLoggedIn');
+    window.location.href = 'index.html';
 }
