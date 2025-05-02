@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - نظام الإدارة</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <header>
+            <h1>لوحة التحكم</h1>
+            <button class="add-admin-btn" onclick="showAddAdminForm()">+ تسجيل إداري جديد</button>
+        </header>
+
+        <!-- نموذج إضافة إداري جديد -->
+        <div id="addAdminForm" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="hideAddAdminForm()">&times;</span>
+                <h2>تسجيل إداري جديد</h2>
+                <input type="text" id="newAdminName" placeholder="اسم الإداري">
+                <input type="file" id="adminImage" accept="image/*">
+                <select id="adminRank">
+                    <option value="مشرف">مشرف</option>
+                    <option value="رئيس">رئيس</option>
+                    <option value="مدير">مدير</option>
+                </select>
+                <button onclick="addNewAdmin()">حفظ</button>
+            </div>
+        </div>
+
+        <!-- قسم الإداريين -->
+        <div class="admins-section">
+            <h2>قائمة الإداريين</h2>
+            <div class="admins-grid" id="adminsContainer">
+                <!-- سيتم ملؤها بالبيانات -->
+            </div>
+        </div>
+
+        <!-- نافذة التأكيد -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content confirm-modal">
+                <p id="confirmMessage">هل أنت متأكد من هذا الإجراء؟</p>
+                <div class="confirm-buttons">
+                    <button onclick="confirmAction()">تأكيد</button>
+                    <button onclick="cancelAction()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
