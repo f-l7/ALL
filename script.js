@@ -59,7 +59,8 @@ function renderAdmins() {
             <h3>${admin.name}</h3>
             <p class="admin-rank">${admin.rank}</p>
             <div class="admin-actions">
-                <button class="promote-btn" onclick="showPromoteModal(${index})">ترقية</button>
+                <button class="promote-btn" onclick="promoteAdmin(${index})">ترقية</button>
+                <button class="demote-btn" onclick="demoteAdmin(${index})">تنزيل</button>
                 <button class="delete-btn" onclick="showDeleteConfirm(${index})">فصل</button>
             </div>
         `;
@@ -70,11 +71,11 @@ function renderAdmins() {
 // إضافة إداري جديد
 function addNewAdmin() {
     const name = document.getElementById('newAdminName').value;
-    const rank = document.getElementById('customRank').value;
+    const rank = document.getElementById('adminRank').value;
     const imageFile = document.getElementById('adminImage').files[0];
 
-    if(!name || !rank) {
-        alert('الرجاء إدخال جميع البيانات المطلوبة');
+    if(!name) {
+        alert('الرجاء إدخال اسم الإداري');
         return;
     }
 
@@ -95,32 +96,38 @@ function addNewAdmin() {
     renderAdmins();
 }
 
-// عرض نافذة الترقية
-function showPromoteModal(index) {
-    systemData.tempData = index;
-    document.getElementById('promoteModal').style.display = 'block';
-}
-
-// تنفيذ الترقية
-function performPromotion() {
-    const newRank = document.getElementById('newRank').value;
-    if(!newRank) {
-        alert('الرجاء إدخال الرتبة الجديدة');
+// ترقية إداري
+function promoteAdmin(index) {
+    const currentRank = systemData.admins[index].rank;
+    let newRank = currentRank;
+    
+    if(currentRank === "مشرف") newRank = "رئيس";
+    else if(currentRank === "رئيس") newRank = "مدير";
+    else {
+        alert("لا يمكن ترقية مدير");
         return;
     }
 
-    const index = systemData.tempData;
     systemData.admins[index].rank = newRank;
     saveAdmins();
     renderAdmins();
-    hidePromoteModal();
 }
 
-// إخفاء نافذة الترقية
-function hidePromoteModal() {
-    document.getElementById('promoteModal').style.display = 'none';
-    document.getElementById('newRank').value = '';
-    systemData.tempData = null;
+// تنزيل رتبة إداري
+function demoteAdmin(index) {
+    const currentRank = systemData.admins[index].rank;
+    let newRank = currentRank;
+    
+    if(currentRank === "مدير") newRank = "رئيس";
+    else if(currentRank === "رئيس") newRank = "مشرف";
+    else {
+        alert("لا يمكن تنزيل مشرف");
+        return;
+    }
+
+    systemData.admins[index].rank = newRank;
+    saveAdmins();
+    renderAdmins();
 }
 
 // تأكيد الفصل
@@ -160,7 +167,6 @@ function hideAddAdminForm() {
     document.getElementById('addAdminForm').style.display = 'none';
     // مسح الحقول
     document.getElementById('newAdminName').value = '';
-    document.getElementById('customRank').value = '';
     document.getElementById('adminImage').value = '';
 }
 
@@ -182,11 +188,6 @@ function setupEventListeners() {
         const confirmModal = document.getElementById('confirmModal');
         if(event.target == confirmModal) {
             hideConfirmModal();
-        }
-        
-        const promoteModal = document.getElementById('promoteModal');
-        if(event.target == promoteModal) {
-            hidePromoteModal();
         }
     }
 }
