@@ -52,7 +52,7 @@ function loginAdmin() {
     const username = document.getElementById('adminUsername').value;
     const password = document.getElementById('adminPassword').value;
 
-    if(username === "admin" && password === "admin123") {
+    if(username === "Staffcommunity" && password === "Allcommunity&22") {
         localStorage.setItem('adminLoggedIn', 'true');
         window.location.href = 'admin-panel.html';
     } else {
