@@ -18,18 +18,10 @@
             <div class="modal-content">
                 <span class="close" onclick="hideAddAdminForm()">&times;</span>
                 <h2>تسجيل إداري جديد</h2>
-                <input type="text" id="newAdminName" placeholder="اسم الإداري">
+                <input type="text" id="newAdminName" placeholder="اسم الإداري" required>
                 <input type="file" id="adminImage" accept="image/*">
-                <select id="adminRank">
-                    <option value="✶〢𝗠𝗼𝗱">✶〢𝗠𝗼𝗱</option>
-                    <option value="✶〢 𝗔𝗱𝗺𝗶𝗻">✶〢 𝗔𝗱𝗺𝗶𝗻</option>
-                    <option value="✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿">✶〢 𝗦𝘂𝗽𝗲𝗿𝘃𝗶𝘀𝗼𝗿</option>
-                    <option value="✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿">✶〢 𝗔𝗱𝗺𝗶𝗻 𝗠𝗮𝗻𝗮𝗴𝗲𝗿</option>
-                    <option value="✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿">✶〢𝗚𝗲𝗻𝗲𝗿𝗮𝗹 𝗠𝗮𝗻𝗮𝗴𝗲𝗿</option>
-                    <option value="✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿">✶〢𝗖𝗼 𝗙𝗼𝘂𝗻𝗱𝗲𝗿</option>
-                    <option value="✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿">✶〢𝗙𝗼𝘂𝗻𝗱𝗲𝗿</option>
-                    <option value="✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿">✶ 〢𝗖𝗼 𝗢𝘄𝗻𝗲𝗿</option>
-                    <option value="✶〢𝗢𝘄𝗻𝗲𝗿">✶〢𝗢𝘄𝗻𝗲𝗿</option>
+                <select id="adminRank" required>
+                    <!-- يتم تعبئتها تلقائيا من النظام -->
                 </select>
                 <button onclick="addNewAdmin()">حفظ</button>
             </div>
