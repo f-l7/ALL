@@ -4,17 +4,16 @@ const systemData = {
     admins: [],
     tempData: null,
     
-    // تسلسل الرتب الهرمي
+    // تسلسل الرتب الهرمي الثابت
     rankHierarchy: [
-        "مود",
-        "أدمن",
-        "سوبرفايزر",
-        "مدير أدمن",
-        "مدير عام",
-        "المؤسس المشارك",
-        "المؤسس",
-        "المالك المشارك",
-        "المالك"
+        "Admin",
+        "Supervisor",
+        "Admin Manager", 
+        "General Manager",
+        "Co Founder",
+        "Founder",
+        "Co Owner",
+        "Owner"
     ]
 };
 
@@ -30,8 +29,23 @@ window.onload = function() {
     if(window.location.pathname.includes('admin-panel')) {
         loadAdmins();
         setupEventListeners();
+        populateRankDropdown();
     }
 };
+
+// تعبئة قائمة الرتب
+function populateRankDropdown() {
+    const rankSelect = document.getElementById('adminRank');
+    if(rankSelect) {
+        rankSelect.innerHTML = '';
+        systemData.rankHierarchy.forEach(rank => {
+            const option = document.createElement('option');
+            option.value = rank;
+            option.textContent = rank;
+            rankSelect.appendChild(option);
+        });
+    }
+}
 
 // تسجيل الدخول
 function loginAdmin() {
@@ -80,16 +94,11 @@ function renderAdmins() {
 // إضافة إداري جديد
 function addNewAdmin() {
     const name = document.getElementById('newAdminName').value.trim();
-    const rank = document.getElementById('customRank').value.trim();
+    const rank = document.getElementById('adminRank').value;
     const imageFile = document.getElementById('adminImage').files[0];
 
     if(!name) {
         alert('الرجاء إدخال اسم الإداري');
-        return;
-    }
-
-    if(!rank) {
-        alert('الرجاء إدخال رتبة الإداري');
         return;
     }
 
@@ -101,14 +110,15 @@ function addNewAdmin() {
     const newAdmin = {
         name,
         rank,
-        image: imageUrl
+        image: imageUrl,
+        joinDate: new Date().toLocaleDateString()
     };
 
     systemData.admins.push(newAdmin);
     saveAdmins();
     hideAddAdminForm();
     renderAdmins();
-    alert('تم تسجيل الإداري الجديد بنجاح');
+    alert(`تم تسجيل الإداري ${name} برتبة ${rank} بنجاح`);
 }
 
 // ترقية إداري
@@ -117,12 +127,12 @@ function promoteAdmin(index) {
     const currentIndex = systemData.rankHierarchy.indexOf(currentRank);
     
     if (currentIndex === -1) {
-        alert("الرتبة الحالية غير معروفة في النظام");
+        alert(`خطأ: الرتبة "${currentRank}" غير موجودة في النظام`);
         return;
     }
     
     if (currentIndex === systemData.rankHierarchy.length - 1) {
-        alert("هذا الإداري في أعلى رتبة ولا يمكن ترقيته");
+        alert("لا يمكن ترقية هذا الإداري لأنه في أعلى رتبة");
         return;
     }
     
@@ -130,8 +140,7 @@ function promoteAdmin(index) {
     systemData.admins[index].rank = newRank;
     saveAdmins();
     renderAdmins();
-    
-    alert(`تم ترقية ${systemData.admins[index].name} إلى رتبة ${newRank}`);
+    alert(`تم ترقية ${systemData.admins[index].name} إلى ${newRank}`);
 }
 
 // تنزيل رتبة إداري
@@ -140,12 +149,12 @@ function demoteAdmin(index) {
     const currentIndex = systemData.rankHierarchy.indexOf(currentRank);
     
     if (currentIndex === -1) {
-        alert("الرتبة الحالية غير معروفة في النظام");
+        alert(`خطأ: الرتبة "${currentRank}" غير موجودة في النظام`);
         return;
     }
     
     if (currentIndex === 0) {
-        alert("هذا الإداري في أدنى رتبة ولا يمكن تنزيله");
+        alert("لا يمكن تنزيل هذا الإداري لأنه في أدنى رتبة");
         return;
     }
     
@@ -153,7 +162,6 @@ function demoteAdmin(index) {
     systemData.admins[index].rank = newRank;
     saveAdmins();
     renderAdmins();
-    
     alert(`تم تنزيل رتبة ${systemData.admins[index].name} إلى ${newRank}`);
 }
 
@@ -167,11 +175,9 @@ function showDeleteConfirm(index) {
 // تنفيذ الفصل
 function confirmAction() {
     if(systemData.tempData !== null) {
-        const adminName = systemData.admins[systemData.tempData].name;
         systemData.admins.splice(systemData.tempData, 1);
         saveAdmins();
         renderAdmins();
-        alert(`تم فصل الإداري ${adminName} بنجاح`);
     }
     hideConfirmModal();
 }
@@ -195,7 +201,6 @@ function showAddAdminForm() {
 function hideAddAdminForm() {
     document.getElementById('addAdminForm').style.display = 'none';
     document.getElementById('newAdminName').value = '';
-    document.getElementById('customRank').value = '';
     document.getElementById('adminImage').value = '';
 }
 
